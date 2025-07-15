@@ -18,7 +18,7 @@ function Header() {
         <div className="flex items-center gap-2.5">
           <Logo />
           <Select>
-            <SelectTrigger className="w-[180px] ring-0 border-0 focus:ring-0 focus:border-0">
+            <SelectTrigger className="w-[180px] focus:ring-0 focus:border-0">
               <SelectValue placeholder="Select Restaurant" />
             </SelectTrigger>
             <SelectContent>
