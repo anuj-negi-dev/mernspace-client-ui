@@ -1,6 +1,46 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import ProductCard, { Product } from "./components/ProductCard";
+
+const products: Product[] = [
+  {
+    _id: "1",
+    name: "Margherita Pizza",
+    description:
+      "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
+    price: 12.99,
+    image: "/pizza-main.png",
+  },
+  {
+    _id: "2",
+    name: "Pepperoni Pizza",
+    description: "Spicy pepperoni slices on a bed of melted cheese.",
+    price: 14.99,
+    image: "/pizza-main.png",
+  },
+  {
+    _id: "3",
+    name: "Pepperoni Pizza",
+    description: "Spicy pepperoni slices on a bed of melted cheese.",
+    price: 14.99,
+    image: "/pizza-main.png",
+  },
+  {
+    _id: "4",
+    name: "Pepperoni Pizza",
+    description: "Spicy pepperoni slices on a bed of melted cheese.",
+    price: 14.99,
+    image: "/pizza-main.png",
+  },
+  {
+    _id: "5",
+    name: "Pepperoni Pizza",
+    description: "Spicy pepperoni slices on a bed of melted cheese.",
+    price: 14.99,
+    image: "/pizza-main.png",
+  },
+];
 
 export default function Home() {
   return (
@@ -15,7 +55,7 @@ export default function Home() {
             <p className="text-2xl mt-8 max-w-lg leading-snug">
               Enjoy a Free Meal if Your Order Takes More Than 45 Minutes!
             </p>
-            <Button className="mt-8 text-lg rounded-full py-7 px-6 font-bold">
+            <Button className="mt-8 text-lg rounded-xl py-7 px-6 font-bold">
               Get your pizza now
             </Button>
           </div>
@@ -30,8 +70,8 @@ export default function Home() {
         </div>
       </section>
       <section>
-        <div className="container px-24">
-          <Tabs defaultValue="pizza" className="w-[480px]">
+        <div className="container px-24 mt-4">
+          <Tabs defaultValue="pizza">
             <TabsList>
               <TabsTrigger value="pizza" className="text-md">
                 Pizza
@@ -41,10 +81,18 @@ export default function Home() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="pizza">
-              <p>Pizza Content</p>
+              <div className="grid grid-cols-4 gap-6 mt-6">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
             </TabsContent>
             <TabsContent value="beverages">
-              <p>Beverages Content</p>
+              <div className="grid grid-cols-4 gap-6 mt-6">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
