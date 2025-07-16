@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Image from "next/image";
+import ToppingList from "./ToppingList";
 
 export type Product = {
   _id: string;
@@ -158,6 +159,8 @@ function ProductCard({ product }: ProductCardProps) {
                       </div>
                     </RadioGroup>
                   </div>
+
+                  <ToppingList />
                 </div>
               </div>
             </DialogContent>
