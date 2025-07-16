@@ -18,14 +18,7 @@ import Image from "next/image";
 import ToppingList from "./ToppingList";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
-
-export type Product = {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-};
+import { Product } from "@/lib/Types";
 
 type ProductCardProps = {
   product: Product;
@@ -49,7 +42,7 @@ function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="flex items-center justify-between w-full">
         <p>
           <span>From </span>
-          <span className="font-semibold">₹{product.price}</span>
+          <span className="font-semibold">₹100</span>
         </p>
         <Dialog>
           <DialogTrigger className="bg-orange-200 text-orange-500 hover:bg-orange-300 px-6 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none transition-all duration-150 ease-in-out">

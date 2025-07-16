@@ -24,3 +24,20 @@ export interface Category {
   priceConfiguration: PriceConfiguration;
   attributes: Attribute[];
 }
+
+export interface ProductAttribute {
+  name: string;
+  value: string;
+}
+
+export interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  isPublish: boolean;
+  attributes: ProductAttribute[];
+  priceConfiguration: PriceConfiguration;
+  categoryId: string;
+}

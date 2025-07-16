@@ -1,47 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
-import ProductCard, { Product } from "./components/ProductCard";
-import { Category } from "@/lib/Types";
-
-const products: Product[] = [
-  {
-    _id: "1",
-    name: "Margherita Pizza",
-    description:
-      "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
-    price: 12.99,
-    image: "/pizza-main.png",
-  },
-  {
-    _id: "2",
-    name: "Pepperoni Pizza",
-    description: "Spicy pepperoni slices on a bed of melted cheese.",
-    price: 14.99,
-    image: "/pizza-main.png",
-  },
-  {
-    _id: "3",
-    name: "Pepperoni Pizza",
-    description: "Spicy pepperoni slices on a bed of melted cheese.",
-    price: 14.99,
-    image: "/pizza-main.png",
-  },
-  {
-    _id: "4",
-    name: "Pepperoni Pizza",
-    description: "Spicy pepperoni slices on a bed of melted cheese.",
-    price: 14.99,
-    image: "/pizza-main.png",
-  },
-  {
-    _id: "5",
-    name: "Pepperoni Pizza",
-    description: "Spicy pepperoni slices on a bed of melted cheese.",
-    price: 14.99,
-    image: "/pizza-main.png",
-  },
-];
+import ProductCard from "./components/ProductCard";
+import { Category, Product } from "@/lib/Types";
 
 export default async function Home() {
   const categoryResponse = await fetch(
@@ -56,6 +17,19 @@ export default async function Home() {
   }
 
   const categories = await categoryResponse.json();
+
+  const productResponse = await fetch(
+    `${process.env.BACKEND_URL}/api/catalog/products?perPage=100&tenantId=12`,
+    {
+      next: { revalidate: 3600 },
+    }
+  );
+
+  if (!productResponse.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  const products = await productResponse.json();
 
   return (
     <>
@@ -85,7 +59,7 @@ export default async function Home() {
       </section>
       <section>
         <div className="container px-24 mt-4">
-          <Tabs defaultValue="Pizza">
+          <Tabs defaultValue={categories[0]._id}>
             <TabsList>
               {categories.map((category: Category) => (
                 <TabsTrigger key={category._id} value={category._id}>
@@ -93,20 +67,15 @@ export default async function Home() {
                 </TabsTrigger>
               ))}
             </TabsList>
-            <TabsContent value="Pizza">
-              <div className="grid grid-cols-4 gap-6 mt-6">
-                {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
-                ))}
-              </div>
-            </TabsContent>
-            <TabsContent value="Beverages">
-              <div className="grid grid-cols-4 gap-6 mt-6">
-                {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
-                ))}
-              </div>
-            </TabsContent>
+            {categories.map((category: Category) => (
+              <TabsContent key={category._id} value={category._id}>
+                <div className="grid grid-cols-4 gap-6 mt-6">
+                  {products.data.filter((product: Product) => product.categoryId === category._id).map((product: Product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </div>
+              </TabsContent>
+            ))}
           </Tabs>
         </div>
       </section>
