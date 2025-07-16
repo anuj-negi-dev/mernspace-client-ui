@@ -16,6 +16,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Image from "next/image";
 import ToppingList from "./ToppingList";
+import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
 
 export type Product = {
   _id: string;
@@ -57,7 +59,7 @@ function ProductCard({ product }: ProductCardProps) {
             <VisuallyHidden>
               <DialogTitle>Order product</DialogTitle>
             </VisuallyHidden>
-            <DialogContent className="max-w-2xl p-0">
+            <DialogContent className="p-0 max-w-3xl">
               <div className="flex">
                 <div className="w-1/3 bg-white rounded-xl flex items-center justify-center p-8">
                   <Image
@@ -161,6 +163,14 @@ function ProductCard({ product }: ProductCardProps) {
                   </div>
 
                   <ToppingList />
+
+                  <div className="mt-12 flex items-center justify-between">
+                    <span>$400</span>
+                    <Button className="flex items-center justify-center">
+                      <ShoppingCart className="text-white" />
+                      <span className="text-white">Add to Cart</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </DialogContent>
