@@ -1,0 +1,87 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import ToppingList from "./ToppingList";
+import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
+import { Product } from "@/lib/Types";
+import Image from "next/image";
+
+function ProductModel({ product }: { product: Product }) {
+  return (
+    <Dialog>
+      <DialogTrigger className="bg-orange-200 text-orange-500 hover:bg-orange-300 px-6 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none transition-all duration-150 ease-in-out">
+        Choose
+      </DialogTrigger>
+      <DialogHeader>
+        <VisuallyHidden>
+          <DialogTitle>Order product</DialogTitle>
+        </VisuallyHidden>
+        <DialogContent className="p-0 max-w-3xl">
+          <div className="flex">
+            <div className="w-1/2 bg-white rounded-xl flex items-center justify-center p-8">
+              <Image
+                src={product.image}
+                width={250}
+                height={250}
+                alt={product.name}
+              />
+            </div>
+            <div className="w-3/3 p-8">
+              <h3 className="text-xl font-bold">{product.name}</h3>
+              <p className="mt-1">{product.description}</p>
+
+              {Object.entries(product.category.priceConfiguration).map(
+                ([key, value]) => (
+                  <div key={key}>
+                    <h4 className="mt-6">Choose the </h4>
+                    <RadioGroup
+                      defaultValue={value.availableOptions[0]}
+                      className="grid grid-cols-3 gap-4 mt-2"
+                    >
+                      {value.availableOptions.map((option: string) => (
+                        <div key={option}>
+                          <RadioGroupItem
+                            value={option}
+                            id={option}
+                            className="peer sr-only"
+                            aria-label={option}
+                          />
+                          <Label
+                            htmlFor={option}
+                            className="flex flex-col items-center justify-between rounded-md border-2 bg-white p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                          >
+                            {option}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+                )
+              )}
+
+              <ToppingList />
+
+              <div className="mt-12 flex items-center justify-between">
+                <span>$400</span>
+                <Button className="flex items-center justify-center">
+                  <ShoppingCart className="text-white" />
+                  <span className="text-white">Add to Cart</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </DialogHeader>
+    </Dialog>
+  );
+}
+
+export default ProductModel;

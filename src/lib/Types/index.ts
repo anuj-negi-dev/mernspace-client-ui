@@ -40,4 +40,5 @@ export interface Product {
   attributes: ProductAttribute[];
   priceConfiguration: PriceConfiguration;
   categoryId: string;
+  category: Category;
 }
