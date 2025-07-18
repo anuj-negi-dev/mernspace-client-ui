@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product } from "@/lib/Types";
 import Image from "next/image";
+import { Suspense } from "react";
+import Spinner from "@/components/custom/Spinner";
 
 const handleAddToCard = () => {
   //Add to cart logic
@@ -73,9 +75,9 @@ function ProductModel({ product }: { product: Product }) {
                   </div>
                 )
               )}
-
-              <ToppingList />
-
+              <Suspense fallback={<Spinner />}>
+                <ToppingList />
+              </Suspense>
               <div className="mt-12 flex items-center justify-between">
                 <span>$400</span>
                 <Button
