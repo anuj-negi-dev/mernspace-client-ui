@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -14,6 +16,11 @@ import { ShoppingCart } from "lucide-react";
 import { Product } from "@/lib/Types";
 import Image from "next/image";
 
+const handleAddToCard = () => {
+  //Add to cart logic
+  console.log("Added to card");
+};
+
 function ProductModel({ product }: { product: Product }) {
   return (
     <Dialog>
@@ -24,7 +31,7 @@ function ProductModel({ product }: { product: Product }) {
         <VisuallyHidden>
           <DialogTitle>Order product</DialogTitle>
         </VisuallyHidden>
-        <DialogContent className="p-0 max-w-3xl">
+        <DialogContent className="p-0 max-w-7xl">
           <div className="flex">
             <div className="w-1/2 bg-white rounded-xl flex items-center justify-center p-8">
               <Image
@@ -71,7 +78,10 @@ function ProductModel({ product }: { product: Product }) {
 
               <div className="mt-12 flex items-center justify-between">
                 <span>$400</span>
-                <Button className="flex items-center justify-center">
+                <Button
+                  className="flex items-center justify-center"
+                  onClick={() => handleAddToCard()}
+                >
                   <ShoppingCart className="text-white" />
                   <span className="text-white">Add to Cart</span>
                 </Button>
