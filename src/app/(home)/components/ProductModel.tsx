@@ -17,13 +17,20 @@ import { Product, Topping } from "@/lib/Types";
 import Image from "next/image";
 import { Suspense, useState, startTransition } from "react";
 import Spinner from "@/components/custom/Spinner";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { addToCart } from "@/lib/features/cart/cartSlice";
 
 type chosenConfig = {
   [key: string]: string;
 };
 
 function ProductModel({ product }: { product: Product }) {
-  const [chosenConfig, setChoseConfig] = useState<chosenConfig>();
+  const dispatch = useAppDispatch();
+
+  const [chosenConfig, setChoseConfig] = useState<chosenConfig>({
+    Size: "small",
+    Crust: "thin",
+  });
 
   const handleRadioChange = (key: string, data: string) => {
     setChoseConfig((prev) => {
@@ -51,9 +58,15 @@ function ProductModel({ product }: { product: Product }) {
     });
   };
 
-  const handleAddToCard = () => {
-    //Add to cart logic
-    console.log("Added to card");
+  const handleAddToCard = (product: Product) => {
+    const itemToAdd = {
+      product,
+      chosenConfiguration: {
+        priceConfiguration: chosenConfig,
+        selectedToppings: selectedTopping,
+      },
+    };
+    dispatch(addToCart(itemToAdd));
   };
 
   return (
@@ -119,8 +132,8 @@ function ProductModel({ product }: { product: Product }) {
               <div className="mt-12 flex items-center justify-between">
                 <span>$400</span>
                 <Button
-                  className="flex items-center justify-center"
-                  onClick={() => handleAddToCard()}
+                  className="flex items-center justify-center cursor-pointer"
+                  onClick={() => handleAddToCard(product)}
                 >
                   <ShoppingCart className="text-white" />
                   <span className="text-white">Add to Cart</span>
