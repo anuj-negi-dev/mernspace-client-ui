@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product } from "@/lib/Types";
 import Image from "next/image";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Spinner from "@/components/custom/Spinner";
 
 const handleAddToCard = () => {
@@ -23,7 +23,22 @@ const handleAddToCard = () => {
   console.log("Added to card");
 };
 
+type chosenConfig = {
+  [key: string]: string;
+};
+
 function ProductModel({ product }: { product: Product }) {
+  const [chosenConfig, setChoseConfig] = useState<chosenConfig>();
+
+  const handleRadioChange = (key: string, data: string) => {
+    setChoseConfig((prev) => {
+      return {
+        ...prev,
+        [key]: data,
+      };
+    });
+  };
+
   return (
     <Dialog>
       <DialogTrigger className="bg-orange-200 text-orange-500 hover:bg-orange-300 px-6 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none transition-all duration-150 ease-in-out">
@@ -50,10 +65,13 @@ function ProductModel({ product }: { product: Product }) {
               {Object.entries(product.category.priceConfiguration).map(
                 ([key, value]) => (
                   <div key={key}>
-                    <h4 className="mt-6">Choose the </h4>
+                    <h4 className="mt-6">Choose the {key}</h4>
                     <RadioGroup
                       defaultValue={value.availableOptions[0]}
                       className="grid grid-cols-3 gap-4 mt-2"
+                      onValueChange={(data) => {
+                        handleRadioChange(key, data);
+                      }}
                     >
                       {value.availableOptions.map((option: string) => (
                         <div key={option}>
