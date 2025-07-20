@@ -13,15 +13,10 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import ToppingList from "./ToppingList";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
-import { Product } from "@/lib/Types";
+import { Product, Topping } from "@/lib/Types";
 import Image from "next/image";
-import { Suspense, useState } from "react";
+import { Suspense, useState, startTransition } from "react";
 import Spinner from "@/components/custom/Spinner";
-
-const handleAddToCard = () => {
-  //Add to cart logic
-  console.log("Added to card");
-};
 
 type chosenConfig = {
   [key: string]: string;
@@ -37,6 +32,28 @@ function ProductModel({ product }: { product: Product }) {
         [key]: data,
       };
     });
+  };
+
+  const [selectedTopping, setSelectedTopping] = useState<Topping[]>([]);
+
+  const handleCheckBoxCheck = (topping: Topping) => {
+    const isAlreadyExists = selectedTopping.some(
+      (element) => element._id === topping._id
+    );
+    startTransition(() => {
+      if (isAlreadyExists) {
+        setSelectedTopping((prev) =>
+          prev.filter((ele) => ele._id !== topping._id)
+        );
+        return;
+      }
+      setSelectedTopping((prev) => [...prev, topping]);
+    });
+  };
+
+  const handleAddToCard = () => {
+    //Add to cart logic
+    console.log("Added to card");
   };
 
   return (
@@ -94,7 +111,10 @@ function ProductModel({ product }: { product: Product }) {
                 )
               )}
               <Suspense fallback={<Spinner />}>
-                <ToppingList />
+                <ToppingList
+                  selectedTopping={selectedTopping}
+                  handleCheckBoxCheck={handleCheckBoxCheck}
+                />
               </Suspense>
               <div className="mt-12 flex items-center justify-between">
                 <span>$400</span>
