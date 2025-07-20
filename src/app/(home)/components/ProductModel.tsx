@@ -27,10 +27,17 @@ type chosenConfig = {
 function ProductModel({ product }: { product: Product }) {
   const dispatch = useAppDispatch();
 
-  const [chosenConfig, setChoseConfig] = useState<chosenConfig>({
-    Size: "small",
-    Crust: "thin",
-  });
+  const defaultConfig = Object.entries(product.category.priceConfiguration)
+    .map(([key, value]) => {
+      return {
+        [key]: value.availableOptions[0],
+      };
+    })
+    .reduce((acc, curr) => {
+      return { ...acc, ...curr };
+    }, {});
+
+  const [chosenConfig, setChoseConfig] = useState<chosenConfig>(defaultConfig);
 
   const handleRadioChange = (key: string, data: string) => {
     setChoseConfig((prev) => {
