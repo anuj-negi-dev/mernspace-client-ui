@@ -30,6 +30,15 @@ export interface ProductAttribute {
   value: string;
 }
 
+export interface ProductPriceConfiguration {
+  [key: string]: {
+    priceType: "base" | "additional";
+    availableOptions: {
+      [key: string]: number;
+    };
+  };
+}
+
 export interface Product {
   _id: string;
   name: string;
@@ -38,7 +47,7 @@ export interface Product {
   image: string;
   isPublish: boolean;
   attributes: ProductAttribute[];
-  priceConfiguration: PriceConfiguration;
+  priceConfiguration: ProductPriceConfiguration;
   categoryId: string;
   category: Category;
 }

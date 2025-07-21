@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Product, Topping } from "@/lib/Types";
 import Image from "next/image";
-import { Suspense, useState, startTransition } from "react";
+import { Suspense, useState, startTransition, useMemo } from "react";
 import Spinner from "@/components/custom/Spinner";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
@@ -65,7 +65,24 @@ function ProductModel({ product }: { product: Product }) {
     });
   };
 
-  const handleAddToCard = (product: Product) => {
+  const totalPrice = useMemo(() => {
+    const toppingsTotal = selectedTopping.reduce(
+      (acc, curr) => acc + curr.price,
+      0
+    );
+    const configPrice = Object.entries(chosenConfig).reduce(
+      (acc, [key, value]) => {
+        const price = product.priceConfiguration[key].availableOptions[value];
+        console.log("Price ", price, typeof price);
+        return acc + price;
+      },
+      0
+    );
+    console.log("Topping Total", toppingsTotal, typeof toppingsTotal);
+    return configPrice + toppingsTotal;
+  }, [selectedTopping, chosenConfig, product.priceConfiguration]);
+
+  const handleAddToCart = (product: Product) => {
     const itemToAdd = {
       product,
       chosenConfiguration: {
@@ -137,10 +154,10 @@ function ProductModel({ product }: { product: Product }) {
                 />
               </Suspense>
               <div className="mt-12 flex items-center justify-between">
-                <span>$400</span>
+                <span>&#8377;{totalPrice}</span>
                 <Button
                   className="flex items-center justify-center cursor-pointer"
-                  onClick={() => handleAddToCard(product)}
+                  onClick={() => handleAddToCart(product)}
                 >
                   <ShoppingCart className="text-white" />
                   <span className="text-white">Add to Cart</span>
