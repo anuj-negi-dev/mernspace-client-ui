@@ -20,7 +20,6 @@ import Spinner from "@/components/custom/Spinner";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
 
-
 type chosenConfig = {
   [key: string]: string;
 };
@@ -120,7 +119,7 @@ function ProductModel({ product }: { product: Product }) {
                   <div key={key}>
                     <h4 className="mt-6">Choose the {key}</h4>
                     <RadioGroup
-                      defaultValue={chosenConfig[key]} 
+                      defaultValue={chosenConfig[key]}
                       className="grid grid-cols-3 gap-4 mt-2"
                       onValueChange={(data) => {
                         handleRadioChange(key, data);
@@ -146,12 +145,15 @@ function ProductModel({ product }: { product: Product }) {
                   </div>
                 )
               )}
-              <Suspense fallback={<Spinner />}>
-                <ToppingList
-                  selectedTopping={selectedTopping}
-                  handleCheckBoxCheck={handleCheckBoxCheck}
-                />
-              </Suspense>
+              {/* This solution is not ideal add hasTopping in category collection */}
+              {product.category.name === "Pizza" && (
+                <Suspense fallback={<Spinner />}>
+                  <ToppingList
+                    selectedTopping={selectedTopping}
+                    handleCheckBoxCheck={handleCheckBoxCheck}
+                  />
+                </Suspense>
+              )}
               <div className="mt-12 flex items-center justify-between">
                 <span>&#8377;{totalPrice}</span>
                 <Button
