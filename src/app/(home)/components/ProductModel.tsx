@@ -20,6 +20,7 @@ import Spinner from "@/components/custom/Spinner";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
 
+
 type chosenConfig = {
   [key: string]: string;
 };
@@ -73,14 +74,12 @@ function ProductModel({ product }: { product: Product }) {
     const configPrice = Object.entries(chosenConfig).reduce(
       (acc, [key, value]) => {
         const price = product.priceConfiguration[key].availableOptions[value];
-        console.log("Price ", price, typeof price);
         return acc + price;
       },
       0
     );
-    console.log("Topping Total", toppingsTotal, typeof toppingsTotal);
     return configPrice + toppingsTotal;
-  }, [selectedTopping, chosenConfig, product.priceConfiguration]);
+  }, [selectedTopping, chosenConfig, product]);
 
   const handleAddToCart = (product: Product) => {
     const itemToAdd = {
@@ -121,7 +120,7 @@ function ProductModel({ product }: { product: Product }) {
                   <div key={key}>
                     <h4 className="mt-6">Choose the {key}</h4>
                     <RadioGroup
-                      defaultValue={value.availableOptions[0]}
+                      defaultValue={chosenConfig[key]} 
                       className="grid grid-cols-3 gap-4 mt-2"
                       onValueChange={(data) => {
                         handleRadioChange(key, data);
