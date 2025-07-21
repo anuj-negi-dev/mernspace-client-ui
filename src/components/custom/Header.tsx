@@ -11,7 +11,7 @@ import Logo from "./Logo";
 import { Phone } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tenant } from "@/lib/Types";
-import CartCounter from "./CartCounter";
+import { CartCounterWithoutSSR } from "./CartCounterWithoutSSR";
 
 async function Header() {
   const tenantsResponse = await fetch(
@@ -58,7 +58,7 @@ async function Header() {
               </Link>
             </li>
           </ul>
-          <CartCounter />
+          <CartCounterWithoutSSR />
           <div className="flex items-center gap-2 ml-4">
             <Phone size={20} />
             <span>+91 12345 67890</span>

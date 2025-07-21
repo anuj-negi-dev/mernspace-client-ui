@@ -25,6 +25,14 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
+      const newItem = {
+        product: action.payload.product,
+        chosenConfiguration: action.payload.chosenConfiguration,
+      };
+      window.localStorage.setItem(
+        "cartItems",
+        JSON.stringify([...state.cartItems, newItem])
+      );
       return {
         cartItems: [
           ...state.cartItems,
@@ -35,8 +43,11 @@ const cartSlice = createSlice({
         ],
       };
     },
+    setInitialCartItem: (state, action: PayloadAction<CartItem[]>) => {
+      state.cartItems.push(...action.payload);
+    },
   },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, setInitialCartItem } = cartSlice.actions;
 export default cartSlice.reducer;
