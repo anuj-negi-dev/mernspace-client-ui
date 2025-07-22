@@ -17,8 +17,9 @@ import { Product, Topping } from "@/lib/Types";
 import Image from "next/image";
 import { Suspense, useState, startTransition, useMemo } from "react";
 import Spinner from "@/components/custom/Spinner";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
+import { hashTheItem } from "@/lib/utils";
 
 type chosenConfig = {
   [key: string]: string;
@@ -26,7 +27,7 @@ type chosenConfig = {
 
 function ProductModel({ product }: { product: Product }) {
   const dispatch = useAppDispatch();
-
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const defaultConfig = Object.entries(product.category.priceConfiguration)
     .map(([key, value]) => {
       return {
@@ -80,13 +81,33 @@ function ProductModel({ product }: { product: Product }) {
     return configPrice + toppingsTotal;
   }, [selectedTopping, chosenConfig, product]);
 
+  const alreadyHasInCart = useMemo(() => {
+    const currentConfiguration = {
+      _id: product._id,
+      name: product.name,
+      image: product.image,
+      priceConfiguration: product.priceConfiguration,
+      chosenConfiguration: {
+        priceConfiguration: { ...chosenConfig },
+        selectedToppings: selectedTopping,
+      },
+      qty: 1,
+    };
+    const hash = hashTheItem(currentConfiguration);
+    return cartItems.some((item) => item.hash === hash);
+  }, [product, chosenConfig, selectedTopping, cartItems]);
+
   const handleAddToCart = (product: Product) => {
     const itemToAdd = {
-      product,
+      _id: product._id,
+      name: product.name,
+      image: product.image,
+      priceConfiguration: product.priceConfiguration,
       chosenConfiguration: {
         priceConfiguration: chosenConfig,
         selectedToppings: selectedTopping,
       },
+      qty: 1,
     };
     dispatch(addToCart(itemToAdd));
   };
@@ -156,13 +177,23 @@ function ProductModel({ product }: { product: Product }) {
               )}
               <div className="mt-12 flex items-center justify-between">
                 <span>&#8377;{totalPrice}</span>
-                <Button
-                  className="flex items-center justify-center cursor-pointer"
-                  onClick={() => handleAddToCart(product)}
-                >
-                  <ShoppingCart className="text-white" />
-                  <span className="text-white">Add to Cart</span>
-                </Button>
+                {alreadyHasInCart ? (
+                  <Button
+                    className="flex items-center justify-center cursor-pointer bg-green-700"
+                    disabled={true}
+                  >
+                    <ShoppingCart className="text-white" />
+                    <span className="text-white">Already in cart</span>
+                  </Button>
+                ) : (
+                  <Button
+                    className="flex items-center justify-center cursor-pointer"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    <ShoppingCart className="text-white" />
+                    <span className="text-white">Add to cart</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
