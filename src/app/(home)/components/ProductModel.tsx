@@ -111,6 +111,8 @@ function ProductModel({ product }: { product: Product }) {
       qty: 1,
     };
     dispatch(addToCart(itemToAdd));
+    setSelectedTopping([]);
+    setChoseConfig(defaultConfig);
     setDialogOpen(false);
   };
 
