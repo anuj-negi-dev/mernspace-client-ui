@@ -4,7 +4,11 @@ import { Suspense } from "react";
 import ProductList from "./components/ProductList";
 import Spinner from "@/components/custom/Spinner";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { tenantId: string };
+}) {
   return (
     <>
       <section className="bg-white">
@@ -32,7 +36,7 @@ export default async function Home() {
         </div>
       </section>
       <Suspense fallback={<Spinner />}>
-        <ProductList />
+        <ProductList searchParams={searchParams} />
       </Suspense>
     </>
   );

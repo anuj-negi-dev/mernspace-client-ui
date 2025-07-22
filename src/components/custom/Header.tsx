@@ -1,17 +1,10 @@
 import Link from "next/link";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+
 import Logo from "./Logo";
 import { Phone } from "lucide-react";
 import { Button } from "../ui/button";
-import { Tenant } from "@/lib/Types";
 import { CartCounterWithoutSSR } from "./CartCounterWithoutSSR";
+import TenantSelect from "./TenantSelect";
 
 async function Header() {
   const tenantsResponse = await fetch(
@@ -30,20 +23,7 @@ async function Header() {
       <nav className="container py-5 flex items-center justify-around">
         <div className="flex items-center gap-2.5">
           <Logo />
-          <Select>
-            <SelectTrigger className="w-[180px] focus:ring-0 focus:border-0">
-              <SelectValue placeholder="Select Restaurant" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {tenants.data.map((tenant: Tenant) => (
-                  <SelectItem key={tenant.id} value={tenant.id}>
-                    {tenant.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <TenantSelect tenants={tenants.data} />
         </div>
         <div className="flex items-center gap-4 font-medium">
           <ul className="flex items-center gap-4 font-medium list-none">
