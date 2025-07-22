@@ -20,6 +20,7 @@ import Spinner from "@/components/custom/Spinner";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { addToCart } from "@/lib/features/cart/cartSlice";
 import { hashTheItem } from "@/lib/utils";
+import { toast } from "sonner";
 
 type chosenConfig = {
   [key: string]: string;
@@ -114,6 +115,9 @@ function ProductModel({ product }: { product: Product }) {
     setSelectedTopping([]);
     setChoseConfig(defaultConfig);
     setDialogOpen(false);
+    toast("✅ Added to cart", {
+      duration: 500,
+    });
   };
 
   return (
