@@ -7,6 +7,7 @@ import {
 import Image from "next/image";
 import { Product } from "@/lib/Types";
 import ProductModel from "./ProductModel";
+import { getFromPrice } from "@/lib/utils";
 
 type ProductCardProps = {
   product: Product;
@@ -30,7 +31,7 @@ function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="flex items-center justify-between w-full">
         <p>
           <span>From </span>
-          <span className="font-semibold">₹100</span>
+          <span className="font-semibold">₹{getFromPrice(product)}</span>
         </p>
         <ProductModel product={product} />
       </CardFooter>
