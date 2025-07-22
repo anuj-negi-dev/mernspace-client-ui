@@ -28,6 +28,7 @@ type chosenConfig = {
 function ProductModel({ product }: { product: Product }) {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const defaultConfig = Object.entries(product.category.priceConfiguration)
     .map(([key, value]) => {
       return {
@@ -110,10 +111,11 @@ function ProductModel({ product }: { product: Product }) {
       qty: 1,
     };
     dispatch(addToCart(itemToAdd));
+    setDialogOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger className="bg-orange-200 text-orange-500 hover:bg-orange-300 px-6 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none transition-all duration-150 ease-in-out">
         Choose
       </DialogTrigger>
@@ -177,23 +179,19 @@ function ProductModel({ product }: { product: Product }) {
               )}
               <div className="mt-12 flex items-center justify-between">
                 <span>&#8377;{totalPrice}</span>
-                {alreadyHasInCart ? (
-                  <Button
-                    className="flex items-center justify-center cursor-pointer bg-green-700"
-                    disabled={true}
-                  >
-                    <ShoppingCart className="text-white" />
-                    <span className="text-white">Already in cart</span>
-                  </Button>
-                ) : (
-                  <Button
-                    className="flex items-center justify-center cursor-pointer"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    <ShoppingCart className="text-white" />
-                    <span className="text-white">Add to cart</span>
-                  </Button>
-                )}
+
+                <Button
+                  className={`flex items-center justify-center cursor-pointer ${
+                    alreadyHasInCart ? `bg-gray-700` : `bg-primary`
+                  } `}
+                  onClick={() => handleAddToCart(product)}
+                  disabled={alreadyHasInCart}
+                >
+                  <ShoppingCart className="text-white" />
+                  <span className="text-white">
+                    {alreadyHasInCart ? "Already in cart" : "Add to cart"}
+                  </span>
+                </Button>
               </div>
             </div>
           </div>
