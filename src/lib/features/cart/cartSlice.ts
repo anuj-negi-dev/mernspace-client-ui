@@ -1,3 +1,4 @@
+import CartItem from "@/app/cart/cartItems/CartItem";
 import { Product, Topping } from "@/lib/Types";
 import { hashTheItem } from "@/lib/utils";
 import { createSlice } from "@reduxjs/toolkit";
@@ -52,8 +53,21 @@ const cartSlice = createSlice({
     setInitialCartItem: (state, action: PayloadAction<CartItem[]>) => {
       state.cartItems.push(...action.payload);
     },
+    changeQty: (
+      state,
+      action: PayloadAction<{ hash: string; qty: number }>
+    ) => {
+      const index = state.cartItems.findIndex(
+        (item) => item.hash === action.payload.hash
+      );
+      state.cartItems[index].qty = Math.max(
+        1,
+        state.cartItems[index].qty + action.payload.qty
+      );
+      window.localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+    },
   },
 });
 
-export const { addToCart, setInitialCartItem } = cartSlice.actions;
+export const { addToCart, setInitialCartItem, changeQty } = cartSlice.actions;
 export default cartSlice.reducer;
