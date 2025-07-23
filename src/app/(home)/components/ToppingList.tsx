@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ToppingCard from "./ToppingCard";
 import { Topping } from "@/lib/Types";
+import { useSearchParams } from "next/navigation";
 
 function ToppingList({
   selectedTopping,
@@ -11,11 +12,17 @@ function ToppingList({
 }) {
   const [toppings, setToppings] = useState<Topping[]>([]);
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     const fetchToppings = async () => {
       // TODO: Make tenantId dynamic
       const toppingResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/catalog/toppings?tenantId=12&perPage=3&currentPage=1`
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        }/api/catalog/toppings?tenantId=${searchParams.get(
+          "tenantId"
+        )}&perPage=3&currentPage=1`
       );
       if (!toppingResponse.ok) {
         throw new Error("Failed to fetch topping..");
