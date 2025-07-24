@@ -60,6 +60,14 @@ const cartSlice = createSlice({
       const index = state.cartItems.findIndex(
         (item) => item.hash === action.payload.hash
       );
+      if (action.payload.qty === 0) {
+        state.cartItems.splice(index, 1);
+        window.localStorage.setItem(
+          "cartItems",
+          JSON.stringify(state.cartItems)
+        );
+        return;
+      }
       state.cartItems[index].qty = Math.max(
         1,
         state.cartItems[index].qty + action.payload.qty
