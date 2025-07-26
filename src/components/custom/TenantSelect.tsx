@@ -24,7 +24,7 @@ function TenantSelect({ tenants }: { tenants: Tenant[] }) {
   return (
     <Select
       onValueChange={handleValueChange}
-      defaultValue={searchParams.get("tenantId") as string}
+      defaultValue={(searchParams.get("tenantId") as string) || undefined}
     >
       <SelectTrigger className="w-[180px] focus:ring-0 focus:border-0">
         <SelectValue placeholder="Select Restaurant" />

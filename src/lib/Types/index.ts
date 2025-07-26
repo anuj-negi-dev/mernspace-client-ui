@@ -59,3 +59,16 @@ export type Topping = {
   image: string;
   isPublish: boolean;
 };
+
+export interface User {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: "admin" | "manager" | "customer";
+  tenant: number;
+}
+
+export interface Session {
+  user: User;
+}

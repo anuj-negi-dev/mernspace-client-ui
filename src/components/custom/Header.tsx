@@ -5,8 +5,10 @@ import { Phone } from "lucide-react";
 import { Button } from "../ui/button";
 import { CartCounterWithoutSSR } from "./CartCounterWithoutSSR";
 import TenantSelect from "./TenantSelect";
+import { getSession } from "@/lib/getsession";
 
 async function Header() {
+  const session = await getSession();
   const tenantsResponse = await fetch(
     `${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`,
     {
@@ -43,7 +45,7 @@ async function Header() {
             <Phone size={20} />
             <span>+91 12345 67890</span>
           </div>
-          <Button size={"sm"}>Logout</Button>
+          <Button size={"sm"}>{session ? "Logout" : "Login"}</Button>
         </div>
       </nav>
     </header>
