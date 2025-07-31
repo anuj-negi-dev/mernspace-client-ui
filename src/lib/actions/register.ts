@@ -34,41 +34,40 @@ export default async function register(prevState: any, formdata: FormData) {
       };
     }
 
-    const c = response.headers.getSetCookie();
-    const accessToken = c.find((cookie) => cookie.includes("accessToken"));
-    const refreshToken = c.find((cookie) => cookie.includes("refreshToken"));
+    const cookieArray = response.headers.getSetCookie();
+    const accessToken = cookieArray.find((cookie) =>
+      cookie.includes("accessToken")
+    );
+    const refreshToken = cookieArray.find((cookie) =>
+      cookie.includes("refreshToken")
+    );
 
     if (!accessToken || !refreshToken) {
       return {
         type: "error",
-        message: "No cookies were found!",
+        message: "No cookie was found!",
       };
     }
 
     const parsedAccessToken = cookie.parse(accessToken);
     const parsedRefreshToken = cookie.parse(refreshToken);
 
-    const cookieHandler = await cookies();
-
-    cookieHandler.set({
+    (await cookies()).set({
       name: "accessToken",
       value: parsedAccessToken.accessToken as string,
-      expires: new Date(parsedAccessToken.expires as unknown as Date),
+      expires: new Date(parsedAccessToken.expires as unknown as Date) as Date,
       httpOnly: (parsedAccessToken.httpOnly as unknown as boolean) || true,
-      path: parsedAccessToken.Path,
-      domain: parsedAccessToken.Domain,
-      sameSite: parsedAccessToken.SameSite as "strict",
+      path: parsedAccessToken.Domain,
+      sameSite: parsedAccessToken.sameSite as "strict",
     });
 
-    cookieHandler.set({
+    (await cookies()).set({
       name: "refreshToken",
       value: parsedRefreshToken.refreshToken as string,
-      expires: new Date(parsedRefreshToken.expires as unknown as Date),
-      // todo: check auth service for httpOnly parameter
+      expires: new Date(parsedRefreshToken.expires as unknown as Date) as Date,
       httpOnly: (parsedRefreshToken.httpOnly as unknown as boolean) || true,
-      path: parsedRefreshToken.Path,
-      domain: parsedRefreshToken.Domain,
-      sameSite: parsedRefreshToken.SameSite as "strict",
+      path: parsedRefreshToken.Domain,
+      sameSite: parsedRefreshToken.sameSite as "strict",
     });
 
     return {

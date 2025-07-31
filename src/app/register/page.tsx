@@ -14,7 +14,7 @@ const initialState = {
   message: "",
 };
 
-function Page() {
+function Register() {
   const [state, formAction, isPending] = useActionState(register, initialState);
 
   if (state.type === "success") {
@@ -109,4 +109,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default Register;
