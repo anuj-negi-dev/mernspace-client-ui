@@ -10,6 +10,7 @@ import Logout from "./Logout";
 
 async function Header() {
   const session = await getSession();
+  console.log("Session", session);
   const tenantsResponse = await fetch(
     `${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`,
     {
@@ -47,7 +48,7 @@ async function Header() {
             <span>+91 12345 67890</span>
           </div>
           {session ? (
-           <Logout />
+            <Logout />
           ) : (
             <Button size={"sm"} asChild>
               <Link href={"/login"}>Login</Link>

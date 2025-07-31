@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/custom/Header";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "sonner";
+import Refresher from "@/components/custom/Refresher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,10 +32,11 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Header />
-          <main>{children}</main>
-
-          <Toaster position="bottom-right" />
+          <Refresher>
+            <Header />
+            <main>{children}</main>
+            <Toaster position="bottom-right" />
+          </Refresher>
         </body>
       </StoreProvider>
     </html>
