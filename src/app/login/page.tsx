@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import login from "@/lib/actions/login";
 import { useActionState } from "react";
 import { LoaderCircle } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const initialState = {
   type: "",
@@ -15,10 +16,13 @@ const initialState = {
 };
 
 function Login() {
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+
   const [state, formAction, isPending] = useActionState(login, initialState);
 
   if (state.type === "success") {
-    window.location.href = "/";
+    window.location.href = redirect ? redirect : "/";
   }
 
   return (

@@ -27,7 +27,11 @@ export default async function Checkout({
   const session = await getSession();
 
   if (!session) {
-    redirect(`/login?tenantId=${searchParams.tenantId}`);
+    redirect(
+      `/login?tenantId=${
+        searchParams.tenantId
+      }&redirect=${`/checkout/?tenantId=${searchParams.tenantId}`}`
+    );
   }
 
   return (
