@@ -17,11 +17,17 @@ import { getSession } from "@/lib/getsession";
 import { Coins, CreditCard, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 
-export default async function Checkout() {
+export default async function Checkout({
+  searchParams,
+}: {
+  searchParams: {
+    tenantId: string;
+  };
+}) {
   const session = await getSession();
 
   if (!session) {
-    redirect("/login");
+    redirect(`/login?tenantId=${searchParams.tenantId}`);
   }
 
   return (
