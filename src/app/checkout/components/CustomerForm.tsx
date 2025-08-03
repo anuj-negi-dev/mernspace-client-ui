@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/custom/Spinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,9 +16,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { getCustomer } from "@/lib/http/api";
+import { useQuery } from "@tanstack/react-query";
 import { Coins, CreditCard, Plus } from "lucide-react";
 
 function CustomerForm() {
+  const { data: customer, isPending } = useQuery({
+    queryKey: ["customer"],
+    queryFn: async () => {
+      return await getCustomer().then((res) => res.data);
+    },
+  });
+
+  if (isPending) {
+    return <Spinner />;
+  }
+
   return (
     <div className="flex container gap-6 mt-4">
       <Card className="w-3/5 border-none">
@@ -32,7 +46,8 @@ function CustomerForm() {
                 id="fname"
                 type="text"
                 className="w-full"
-                defaultValue=""
+                defaultValue={customer?.firstname}
+                disabled
               />
             </div>
             <div className="grid gap-3">
@@ -41,7 +56,8 @@ function CustomerForm() {
                 id="lname"
                 type="text"
                 className="w-full"
-                defaultValue=""
+                defaultValue={customer?.lastname}
+                disabled
               />
             </div>
             <div className="grid gap-3">
@@ -50,7 +66,8 @@ function CustomerForm() {
                 id="email"
                 type="text"
                 className="w-full"
-                defaultValue=""
+                defaultValue={customer?.email}
+                disabled
               />
             </div>
             <div className="grid gap-3">
@@ -93,15 +110,6 @@ function CustomerForm() {
                       <Label htmlFor="option-one" className="leading-normal">
                         123, ABC Street, Malad West, Mumbai, Maharashtra, India
                         400064
-                      </Label>
-                    </div>
-                  </Card>
-                  <Card className="p-6">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option-two" id="option-two" />
-                      <Label htmlFor="option-two" className="leading-normal">
-                        Flat No. 501, Sunshine Apartments, Andheri East, Mumbai,
-                        Maharashtra, India 400069
                       </Label>
                     </div>
                   </Card>
