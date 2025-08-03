@@ -104,15 +104,26 @@ function CustomerForm() {
                   defaultValue="option-one"
                   className="grid grid-cols-2 gap-6 mt-2"
                 >
-                  <Card className="p-6">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="option-one" id="option-one" />
-                      <Label htmlFor="option-one" className="leading-normal">
-                        123, ABC Street, Malad West, Mumbai, Maharashtra, India
-                        400064
-                      </Label>
-                    </div>
-                  </Card>
+                  {customer.addresses.map(
+                    (address: { text: string; isDefault: boolean }) => {
+                      return (
+                        <Card className="p-6" key={address.text}>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value="option-one"
+                              id="option-one"
+                            />
+                            <Label
+                              htmlFor="option-one"
+                              className="leading-normal"
+                            >
+                              {address.text}
+                            </Label>
+                          </div>
+                        </Card>
+                      );
+                    }
+                  )}
                 </RadioGroup>
               </div>
             </div>
