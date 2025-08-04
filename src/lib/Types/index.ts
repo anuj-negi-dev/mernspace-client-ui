@@ -72,3 +72,8 @@ export interface User {
 export interface Session {
   user: User;
 }
+
+export interface CouponData {
+  tenantId: string;
+  code: string;
+}
